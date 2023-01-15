@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Services\CategoryService;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {
+    public function __construct() {
+        $this->_categoryService = new CategoryService();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +19,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return $this->_categoryService->getCategories();
     }
 
     /**
@@ -25,7 +29,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -36,7 +40,14 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        $category = Category::create([
+            'title' => $request->title
+        ]);
+
+        return response()->json([
+            'message' => 'success',
+            'data' => $category
+        ]);
     }
 
     /**
@@ -47,7 +58,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return $this->_categoryService->getCategory($category);
     }
 
     /**
@@ -58,7 +69,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return $this->_categoryService->getCategory($category);
     }
 
     /**
@@ -70,7 +81,12 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $category = $this->_categoryService->updateCategory($request, $category);
+
+        return response()->json([
+            'message' => 'success',
+            'data' => $category
+        ]);
     }
 
     /**
@@ -81,6 +97,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $this->_categoryService->deleteCategory($category);
+        
+        return response()->json([
+            'message' => 'success'
+        ]);
     }
 }
