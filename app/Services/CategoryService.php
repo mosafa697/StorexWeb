@@ -16,7 +16,7 @@ class CategoryService
         return Category::find($category);
     }
     
-    public function geupdateCategory($request, $category)
+    public function updateCategory($request, $category)
     {
         $cat = Category::find($category);
         
@@ -25,9 +25,6 @@ class CategoryService
         $cat->save();
         
         return $cat; 
-        // $cat->description = $request->description;
-        // $cat->rate = $request->rate;
-        // $cat->category_id = $request->category_id;
     }
 
     public function deleteCategory($category)
